@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const getAllDept = async (req, res) => {
     try {
 
-        const [rows] = await pool.query('SELECT dept_name, dept_code, user_id created_at, updated_at FROM departments');
+        const [rows] = await pool.query('SELECT dept_name, dept_code, user_id, created_at, updated_at FROM departments');
         res.json(rows);
 
     } catch (err) {
@@ -17,7 +17,7 @@ const getDeptById = async (req, res) => {
     const { id } = req.params;
     
     try {
-        const [rows] = await pool.query('SELECT dept_name, dept_code, user_id created_at, updated_at FROM departments WHERE dept_id = ?', [id]);
+        const [rows] = await pool.query('SELECT dept_name, dept_code, user_id, created_at, updated_at FROM departments WHERE dept_id = ?', [id]);
 
         if (rows.length === 0) {
             return res.status(404).json({ error: 'Nasain man department mo?' });
@@ -42,10 +42,10 @@ const createDept = async (req, res) => {
 
 const updateDept = async (req, res) => {
     const { id } = req.params;
-    const {  dept_name, dept_code, user_id } = req.body;
+    const {  dept_name, dept_code } = req.body;
 
     try {
-        const [result] = await pool.query('UPDATE departments SET dept_name = ?, dept_code = ?, user_id = ? WHERE dept_id = ?', [dept_name, dept_code, id]);
+        const [result] = await pool.query('UPDATE departments SET dept_name = ?, dept_code = ?  WHERE dept_id = ?', [dept_name, dept_code, id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Sari man department mo?' });
