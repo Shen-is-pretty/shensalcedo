@@ -17,7 +17,7 @@ const getCourseById = async (req, res) => {
     const { id } = req.params;
     
     try {
-        const [rows] = await pool.query('SELECT course_name, course_code, user_id, dept_id created_at, updated_at FROM departments WHERE course_id = ?', [id]);
+        const [rows] = await pool.query('SELECT course_name, course_code, user_id, dept_id created_at, updated_at FROM courses WHERE course_id = ?', [id]);
 
         if (rows.length === 0) {
             return res.status(404).json({ error: 'Dai ka man baga enrolled, weyy.' });
