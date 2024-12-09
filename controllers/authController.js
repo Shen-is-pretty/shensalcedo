@@ -4,10 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
     const { firstname, lastname, username, passwords } = req.body;
-     
-    try {
-        const hashedPassword = await bcrypt.hash(passwords, 10);
-        const [rows] = await pool.query('INSERT INTO users (firstname, lastname, username, passwords) VALUES (?, ?, ?, ?)', [firstname, lastname, username, hashedPassword]);
+
     if (!firstname || !lastname || !username || !passwords){
         return res.status(400).json({error: 'Please provide all required fields'});     // Add error handling for empty fields or invalid data types  
         // Implement validation checks for username and passwords to ensure they meet the required criteria (e.g. length, complexity, etc.)  
@@ -19,6 +16,11 @@ const register = async (req, res) => {
         // Implement role-based access control (RBAC) to restrict access to certain routes based on the user's role.  
         // Implement rate
     }
+     
+    try {
+        const hashedPassword = await bcrypt.hash(passwords, 10);
+        const [rows] = await pool.query('INSERT INTO users (firstname, lastname, username, passwords) VALUES (?, ?, ?, ?)', [firstname, lastname, username, hashedPassword]);
+    
         res.status(201).json({ message: 'You did it! You did it! Hooray! ' });
     } catch (err) {
         res.status(500).json({error: err.message});
